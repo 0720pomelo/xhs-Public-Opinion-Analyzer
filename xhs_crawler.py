@@ -41,7 +41,7 @@ def crawl_xhs(keyword,num,filename=f'note{int(time.time())}'):
         #res=[]
         for urls in lst:
             dp.get(f'https://www.xiaohongshu.com{urls}')
-            time.sleep(0.5)
+            time.sleep(1)
             #print(urls)
             dp.wait.ele_displayed('.comment-item')
             comment_list=dp.eles('.comment-item',timeout=0.2)

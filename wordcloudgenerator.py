@@ -138,8 +138,7 @@ def generate_wordcloud(path):
             break
         obj,pos=decoder.raw_decode(content,idx=pos)
         pos+=1
-        print(obj)
-        info.append(obj)
+        #print(obj)
         info.append(obj)
     for items in info:
         text.append(items['content'])
