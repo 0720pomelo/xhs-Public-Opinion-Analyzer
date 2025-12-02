@@ -11,7 +11,7 @@ def append_to_json_file(data,filename):
 
 
 def crawl_xhs(keyword,num,filename=f'note{int(time.time())}'):
-    pos=f'{filename}.jsonl'
+    pos=f'./data/{filename}.jsonl'
     with open(pos, 'w', encoding='utf-8') as f:
         pass
     options = ChromiumOptions()
@@ -66,7 +66,6 @@ def crawl_xhs(keyword,num,filename=f'note{int(time.time())}'):
                   }
             #res.append(info)
             append_to_json_file(info,pos)
-            first=False
         #with open (pos,'w',encoding='utf-8') as f:
         #    json.dump(res,f,ensure_ascii=False,indent=2)
     finally:

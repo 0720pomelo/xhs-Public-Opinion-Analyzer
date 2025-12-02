@@ -2,3 +2,5 @@
 *.jsonl
 .idea/
 __pycache__/
+.data/
+.result/

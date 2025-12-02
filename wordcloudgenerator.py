@@ -151,5 +151,5 @@ def generate_wordcloud(path):
 
 # 使用示例
 if __name__ == "__main__":
-    path = 'note1764233755.jsonl'
+    path = './data/note1764233755.jsonl'
     generate_wordcloud(path)

@@ -26,8 +26,8 @@ def extract_json(text):
         json_str = json_str.replace("'",'"')
         data=json.loads(json_str)
     return data
-def ollama_analyzer(topic):
-    f=openfile('note1764233755.jsonl')
+def ollama_analyzer(topic,pos):
+    f=openfile(f'./data/{pos}.jsonl')
     ans=[]
     for items in f:
         prompt=f'''
@@ -44,10 +44,13 @@ def ollama_analyzer(topic):
             try:
                 processed=extract_json(response['message']['content'])
             except Exception as e:
-                print(Exception)
+                print(e)
                 okay=False
         processed['likes']=items['likes']
         processed['comment_num']=len(items['comments'])
         ans.append(processed)
         print(ans)
-ollama_analyzer('英伟达是泡沫吗')
+    with open(f'./result/{pos}.json', 'w', encoding='utf-8') as f:
+        json.dump(ans, f, ensure_ascii=False, indent=4)
+if __name__=='__main__':
+    ollama_analyzer('英伟达是泡沫吗','note1764233755')
