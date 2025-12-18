@@ -28,8 +28,14 @@ def extract_hashtags(text):
     return [tag for tag in hashtags if len(tag) > 0]
 
 
-def extract_keywords(texts, top_k=50):
-    """提取关键词"""
+def extract_keywords(texts, top_k=50, remove_top_n=5):
+    """提取关键词
+
+    参数:
+    - texts: 文本列表
+    - top_k: TF-IDF / TextRank 各自保留的关键词数量
+    - remove_top_n: 按权重从高到低，去掉最常出现的若干词，一般是话题本身、常见虚词等。
+    """
     all_text = ' '.join(texts)
 
     # 使用TF-IDF提取关键词
@@ -53,6 +59,12 @@ def extract_keywords(texts, top_k=50):
             keyword_weights[word] += weight
         else:
             keyword_weights[word] = weight
+
+    # 去掉权重最高的若干个词（通常是话题本身或无信息量高频词）
+    if remove_top_n and remove_top_n > 0 and len(keyword_weights) > remove_top_n:
+        sorted_items = sorted(keyword_weights.items(), key=lambda x: x[1], reverse=True)
+        for word, _ in sorted_items[:remove_top_n]:
+            keyword_weights.pop(word, None)
 
     return keyword_weights
 

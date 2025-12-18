@@ -13,6 +13,7 @@ def openfile(path):
             obj,pos=decoder.raw_decode(content,idx=pos)
             pos+=1
             info.append(obj)
+    print(len(info))
     return info
 def extract_json(text):
     import re
@@ -82,4 +83,4 @@ def ollama_analyzer(topic,pos):
     with open(f'./result/{pos}.json', 'w', encoding='utf-8') as f:
         json.dump(ans, f, ensure_ascii=False, indent=4)
 if __name__=='__main__':
-    ollama_analyzer('英伟达是泡沫吗','note1764233755')
+    ollama_analyzer('英伟达是泡沫吗','note1765978859')

@@ -20,13 +20,13 @@ def crawl_xhs(keyword,num,filename=f'note{int(time.time())}'):
     options.set_argument("--disable-gpu")
     options.set_argument('--start-maximized')
     options.set_argument('--window-size', '1200,1000')
-    dp = ChromiumPage(options)
+    dp = ChromiumPage()
     try:
         dp.get(f"https://www.xiaohongshu.com/search_result?keyword={keyword}&source=unknown&type=51")
         time.sleep(1)
         lst=[]
         t=time.time()
-        while len(lst)<int(num) and time.time()-t<900:
+        while len(lst)<int(num) and time.time()-t<120:
             dp.wait.ele_displayed('.cover mask ld')
             elements = dp.eles('.cover mask ld')
             for element in elements:
@@ -41,14 +41,14 @@ def crawl_xhs(keyword,num,filename=f'note{int(time.time())}'):
         #res=[]
         for urls in lst:
             dp.get(f'https://www.xiaohongshu.com{urls}')
-            time.sleep(1)
+            time.sleep(2)
             #print(urls)
-            dp.wait.ele_displayed('.comment-item')
+            #dp.wait.ele_displayed('.comment-item')
             comment_list=dp.eles('.comment-item',timeout=0.2)
             comments=[]
-            dp.wait.ele_displayed('.slider-container')
+            #dp.wait.ele_displayed('.slider-container')
             try:
-                img=dp.ele('.slider-container',timeout=0.2).eles('tag:img')
+                img=dp.ele('.note-slider-img xhs-webplayer xhsplayer xhsplayer-pc',timeout=0.2).eles('tag:img')
             except ElementNotFoundError:
                 img=[]
             images=[]
@@ -56,12 +56,16 @@ def crawl_xhs(keyword,num,filename=f'note{int(time.time())}'):
                 comments.append({'username':comment.ele('.author').text,'comment':comment.ele('.note-text').text})
             for image in img:
                 images.append(image.attrs.get('src'))
+            try:
+                likes=int(dp.ele('.interact-container',timeout=0.2).ele('.count').text)
+            except Exception as e:
+                likes=0
             info={'username': dp.ele('.username').text,
                   'title': dp.ele('.title').text,
                   'content': dp.ele('.note-text').text,
                   'image': images,
                   'date_and_location':dp.ele('.bottom-container').text,
-                  'likes': int(dp.ele('.interact-container',timeout=0.2).ele('.count').text),
+                  'likes': likes,
                   'comments': comments
                   }
             #res.append(info)
@@ -75,4 +79,4 @@ def crawl_xhs(keyword,num,filename=f'note{int(time.time())}'):
             pass
 
 if __name__=='__main__':
-    crawl_xhs('英伟达是泡沫吗',10)
+    crawl_xhs('武汉大学舆情',10)
